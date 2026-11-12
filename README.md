@@ -3,7 +3,6 @@
 ## Project Overview
 
 **Project Title**: Retail Sales Analysis
-**Level**: Beginner to Intermediate
 **Database**: `sql_project_1` (PostgreSQL)
 
 This project uses SQL to set up, clean, explore and analyze a retail sales dataset of 2,000 transactions (January 2022 to December 2023). I started from a guided retail-sales tutorial that provided the dataset and the 10 core questions, then added my own data-quality audit and six extended analyses (profitability, growth, segmentation, loyalty, rankings and moving averages) to practise CTEs and window functions.
@@ -104,8 +103,6 @@ WHERE ABS(total_sale - quantity * price_per_unit) >= 0.01;
 | Duplicate transaction IDs | 0 |
 | Rows where `total_sale ≠ quantity × price_per_unit` | 0 |
 
-**Analysis:** the deleted rows were under 1% of the data, so removing them is safe. The consistency check returned no rows, so the sales amounts can be trusted. I used `ABS(...) >= 0.01` instead of `=` because the columns are `FLOAT` and exact comparison can report false mismatches from rounding. Total revenue is **908,230** and total profit is **719,302** (79.2% margin).
-
 ### 3. Data Analysis & Findings
 
 #### Q1. Retrieve all columns for sales made on '2022-11-05'
@@ -117,7 +114,7 @@ WHERE sale_date = '2022-11-05';
 ```
 
 **Result:** 11 transactions totalling 6,830 in revenue.
-**Analysis:** that is about 621 per transaction, well above the dataset average of about 457, so this was a high-value day.
+**Analysis:** That is about 621 per transaction, well above the dataset average of about 457, so this was a high-value day.
 
 #### Q2. Clothing transactions with quantity of 4 or more in November 2022
 
@@ -130,7 +127,6 @@ WHERE category = 'Clothing'
 ```
 
 **Result:** 17 of the 52 Clothing transactions that month.
-**Analysis:** the maximum quantity in the whole dataset is 4, so "more than 4" would return nothing. I used `>= 4`, which means these 17 are the largest possible baskets. Roughly one in three Clothing sales in that month was a maximum-size order.
 
 #### Q3. Total sales and number of orders for each category
 
@@ -149,7 +145,7 @@ ORDER BY net_sales DESC;
 | Clothing | 309,995 | 698 |
 | Beauty | 286,790 | 611 |
 
-**Analysis:** Electronics earns the most revenue even though Clothing has the most orders. The top two are only 0.5% apart, while Beauty trails by about 8%.
+**Analysis:** Electronics earns the most revenue even though Clothing has the most orders. 
 
 #### Q4. Average age of customers who bought from the 'Beauty' category
 
@@ -160,7 +156,7 @@ WHERE category = 'Beauty';
 ```
 
 **Result:** 40.42 years.
-**Analysis:** Beauty customers are middle-aged on average, so there is no strong youth skew.
+**Analysis:** Beauty customers are middle-aged on average
 
 #### Q5. Transactions where total_sale is greater than 1000
 
@@ -171,7 +167,6 @@ WHERE total_sale > 1000;
 ```
 
 **Result:** 306 transactions.
-**Analysis:** about 15% of all transactions are above 1,000, so premium purchases are a regular part of the business and not rare exceptions.
 
 #### Q6. Number of transactions by each gender in each category
 
@@ -188,7 +183,7 @@ ORDER BY category, n_transactions DESC;
 | Clothing | 347 | 351 |
 | Electronics | 335 | 343 |
 
-**Analysis:** purchases are almost evenly split between genders. The only noticeable difference is Beauty, where women account for 54% of transactions.
+**Analysis:** Purchases are almost evenly split between genders. The only noticeable difference is Beauty, where women account for 54% of transactions.
 
 #### Q7. Average sale for each month, and the best month in each year
 
@@ -212,7 +207,7 @@ WHERE rank = 1;
 | 2022 | July (541.34) | December (71,880) |
 | 2023 | February (535.53) | December (69,145) |
 
-**Analysis:** "best selling month" depends on the definition. Ranking by average sale picks quiet months where a few big baskets lift the average, while ranking by total revenue picks December both years. I report both so the answer is not misleading.
+**Analysis:** "Best selling month" depends on the definition. Ranking by average sale picks quiet months where a few big baskets lift the average, while ranking by total revenue picks December both years. I report both so the answer is not misleading.
 
 #### Q8. Top 5 customers based on total sales
 
@@ -232,7 +227,6 @@ LIMIT 5;
 | 2 | 25,295 |
 | 4 | 23,580 |
 
-**Analysis:** the top 5 customers together generate about 16.3% of all revenue, so a small group matters a lot to the business.
 
 #### Q9. Unique customers who purchased from each category
 
@@ -274,7 +268,7 @@ GROUP BY shift;
 
 **Analysis:** the hour is extracted as a whole number, so Afternoon covers 12:00 to 17:59 and Evening starts at 18:00. More than half of all orders happen in the evening, and the afternoon is the quietest period.
 
-### 4. Extended Analysis (my own additions)
+### 4. Extended Analysis 
 
 #### E1. Which category has the highest revenue, and which has the highest profit margin?
 
@@ -294,7 +288,7 @@ ORDER BY profit DESC;
 | Electronics | 311,445 | 244,768 | 78.59% |
 | Beauty | 286,790 | 228,589 | 79.71% |
 
-**Analysis:** the top earner is not the most profitable. Electronics leads on revenue, Clothing on total profit and Beauty on margin, but all margins are within about 1.1 points. A side check found 70 loss-making transactions, all single-unit sales where `cogs` exceeds the price (27 Clothing, 24 Electronics, 19 Beauty). The total loss is only about 1,713, but those items look underpriced.
+**Analysis:** The top earner is not the most profitable. Electronics leads on revenue, Clothing on total profit and Beauty on margin, but all margins are within about 1.1 points. 
 
 #### E2. Month-over-month revenue growth
 
@@ -323,7 +317,7 @@ ORDER BY year, month;
 | Second biggest jump | September 2023 | +139% |
 | Biggest drop | January 2023 | −67% (71,880 → 23,790) |
 
-**Analysis:** revenue sits around 20,000 to 30,000 a month from January to August, then roughly triples from September to December in both years, and falls back in January. The business is strongly seasonal.
+**Analysis:** Revenue sits around 20,000 to 30,000 a month from January to August, then roughly triples from September to December in both years, and falls back in January. The business is strongly seasonal.
 
 #### E3. Age-group segmentation
 
@@ -346,7 +340,7 @@ ORDER BY revenue DESC;
 | 25–34 | 194,090 | 479.23 |
 | Under 25 | 149,160 | 503.92 |
 
-**Analysis:** the 50+ band is the most valuable by total revenue, narrowly ahead of 35 to 49, because it has the most transactions. The youngest customers spend the most per purchase but buy less often. The full script also breaks this down by category.
+**Analysis:** the 50+ band is the most valuable by total revenue, narrowly ahead of 35 to 49, because it has the most transactions. The youngest customers spend the most per purchase but buy less often. 
 
 #### E4. Repeat vs. one-time customers
 
@@ -365,7 +359,7 @@ FROM repeat_customers;
 ```
 
 **Result:** 100% of customers are repeat customers and generate 100% of revenue.
-**Analysis:** every one of the 155 customers bought at least twice (median 10 purchases, maximum 76), so no one-time segment exists to compare against. This is another sign the dataset is synthetic.
+**Analysis:** every one of the 155 customers bought at least twice, so no one-time segment exists to compare against. This is another sign the dataset is synthetic.
 
 #### E5. Top 3 customers within each category
 
@@ -390,7 +384,7 @@ ORDER BY category, customer_rank;
 | Clothing | Customer 5 (12,040) | Customer 1 (11,730) | Customer 3 (11,545) |
 | Electronics | Customer 3 (17,155) | Customer 5 (13,235) | Customer 2 (11,750) |
 
-**Analysis:** the ranking restarts in each category, and the same few customers (IDs 1 to 5) lead all three, which matches the Q8 result.
+**Analysis:** The ranking restarts in each category, and the same few customers (IDs 1 to 5) lead all three, which matches the Q8 result.
 
 #### E6. Cumulative revenue and 3-month moving average
 
@@ -420,7 +414,7 @@ Excerpt for 2022:
 | Nov | 68,915 | 377,455 | 66,090 |
 | Dec | 71,880 | 449,335 | 69,510 |
 
-**Analysis:** annual revenue was 449,335 in 2022 and 458,895 in 2023 (about +2.1%), so growth is nearly flat. The moving average turns the sudden September jump into a gradual climb that reflects the new, higher level of sales, peaking at 69,510 in December 2022 and 61,387 in December 2023.
+**Analysis:** Annual revenue was 449,335 in 2022 and 458,895 in 2023 (about +2.1%), so growth is nearly flat. The moving average turns the sudden September jump into a gradual climb that reflects the new, higher level of sales, peaking at 69,510 in December 2022 and 61,387 in December 2023.
 
 ## Findings
 
@@ -444,14 +438,14 @@ Excerpt for 2022:
 
 This project took me through the full analyst workflow: setting up a database, cleaning and validating the data, exploring it, answering business questions, and going further with CTEs and window functions. The main business insight is the strong September to December seasonality; the main technical lessons were checking data quality before analysing it, stating clear definitions when a question is ambiguous ("best selling month", `cogs`), and casting `FLOAT` to `NUMERIC` for `ROUND` in PostgreSQL.
 
-**Limitations:** the data looks synthetic (79% margins, every customer a repeat buyer), and `customer_id` is not a reliable person identifier because the same ID appears with different ages, so customer counts inside age bands overlap. The results show the method rather than real business truth. I reproduced the figures from the CSV with an independent calculation; running the script in PostgreSQL will confirm the exact output.
+**Limitations:** the data looks synthetic (79% margins, every customer a repeat buyer) The results show the method rather than real business truth. 
 
 ## How to Use
 
 1. **Clone the repository** from GitHub.
-2. **Set up the database**: create a PostgreSQL database (for example `sql_project_1`) and run the table-creation section of `proj_1.sql`. Note that it begins with `DROP TABLE IF EXISTS retail_sales`.
+2. **Set up the database**: create a PostgreSQL database (for example `sql_project_1`) and run the table-creation section of `proj_1.sql`.
 3. **Import the data**: load `SQL - Retail Sales Analysis_utf .csv` into `retail_sales` by column position (the CSV header says `quantiy`), with blank cells loaded as `NULL`.
-4. **Clean and analyze**: run the cleaning section (you should end with 1,987 rows), then the analysis queries.
+4. **Clean and analyze**: run the cleaning section, then the analysis queries.
 5. **Explore**: modify the queries to answer your own questions.
 
 ```text
@@ -465,5 +459,4 @@ This project took me through the full analyst workflow: setting up a database, c
 
 This project is part of my portfolio, showcasing the SQL skills essential for data analyst roles. Feel free to get in touch with feedback or to collaborate.
 
-- **LinkedIn**: [add your link]
 - **GitHub**: [add your link]
