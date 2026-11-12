@@ -459,4 +459,4 @@ This project took me through the full analyst workflow: setting up a database, c
 
 This project is part of my portfolio, showcasing the SQL skills essential for data analyst roles. Feel free to get in touch with feedback or to collaborate.
 
-- **GitHub**: [add your link]
+- **GitHub**: (https://github.com/K-Denis12)
